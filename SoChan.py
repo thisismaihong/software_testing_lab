@@ -9,3 +9,8 @@ if __name__ == '__main__':
         print("Số chẵn")
     else:
         print("Số lẻ")
+
+    if la_so_chan(10):
+        print("Số chẵn")
+    else:
+        print("Số lẻ")

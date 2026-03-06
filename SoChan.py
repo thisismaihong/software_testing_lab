@@ -10,7 +10,7 @@ if __name__ == '__main__':
     else:
         print("Số lẻ")
 
-    if la_so_chan(10):
+    if la_so_chan(1):
         print("Số chẵn")
     else:
         print("Số lẻ")

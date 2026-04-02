@@ -1,1 +1,1 @@
-# kiem_thu_phan_mem_demo
+# software_testing_lab

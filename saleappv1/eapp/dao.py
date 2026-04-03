@@ -1,5 +1,5 @@
+import re
 from sqlalchemy.exc import IntegrityError
-
 from eapp.models import Category, Product, User, Receipt, ReceiptDetails
 import hashlib
 from eapp import app, db
@@ -42,6 +42,17 @@ def auth_user(username, password):
                              User.password==password).first()
 
 def add_user(name, username, password, avatar):
+    if len(username.strip())<5:
+        raise ValueError("Username tối thiểu 5 ký tự ")
+    if len(password.strip())<8:
+        raise ValueError("Password tối thiểu 8 ký tự")
+    if not re.search(r'[0-9]', password.strip()):
+        raise ValueError("Password phải chứa ký tu số")
+    if not re.search(r'[a-zA-Z]', password.strip()):
+        raise ValueError("Password phải chứa ký tự chữ")
+    if User.query.filter(User.username.__eq__(username.strip())).first():
+        raise ValueError("Username đã tồn tại")
+
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
     u = User(name=name.strip(), username=username.strip(), password=password)
     if avatar:

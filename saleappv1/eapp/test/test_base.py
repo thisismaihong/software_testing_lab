@@ -1,7 +1,10 @@
 import pytest
 from flask import Flask
+from sqlalchemy.testing.provision import register
+from eapp.index import regisrer_routers
 
 from eapp import db
+from eapp.index import regisrer_routers
 from eapp.models import Product
 
 
@@ -9,7 +12,12 @@ def create_app():
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     app.config["PAGE_SIZE"] = 2
+    app.config["TESTING"] = True
+    app.secret_key = "efhuir87cy3b4u37yonc2m304-cx[,4"
     db.init_app(app)
+
+    regisrer_routers(app=app)
+
     return  app
 
 
@@ -20,6 +28,11 @@ def test_app():
         db.create_all()
         yield app
         db.drop_all()
+
+@pytest.fixture
+def test_client(test_app):
+    return test_app.test_client()
+
 
 
 @pytest.fixture

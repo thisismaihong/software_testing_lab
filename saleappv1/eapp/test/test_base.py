@@ -1,11 +1,13 @@
 import pytest
 from flask import Flask
+from selenium.webdriver.chrome.service import Service
 from sqlalchemy.testing.provision import register
 from eapp.index import regisrer_routers
 
 from eapp import db
 from eapp.index import regisrer_routers
 from eapp.models import Product
+from selenium import webdriver
 
 
 def create_app():
@@ -58,3 +60,11 @@ def mock_cloudinary(monkeypatch):
     def fake_upload(file):
         return {'secure_url': 'https://fake-image.png'}
     monkeypatch.setattr("cloudinary.uploader.upload", fake_upload)
+
+
+@pytest.fixture
+def driver():
+    service=Service(executable_path="../../.venv/chromedriver.exe")
+    driver=webdriver.Chrome(service=service)
+    yield driver
+    driver.quit()
